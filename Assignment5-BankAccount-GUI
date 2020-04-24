@@ -1,0 +1,340 @@
+//**************************************
+//JAVA 10.0.2
+//Levi McCann
+//03/11/2020
+//Assignment 5 -Program to create simple Bank
+//Acccount Object using Account from Assignment 4
+//Deardorff CIS62 Shasta College
+//**************************************
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class BankAccount_McCann extends JFrame 
+{
+static Account accountone = new Account();
+//-- line ommited --> static Account accounttwo = new Account();
+//--line ommited -->  static Course course3 = new Course();
+//--line omitted -->  static Course course4 = new Course();
+static int numOfAccounts = 0;
+
+public static void main (String []args)
+{
+//Define Panels
+JPanel content = new JPanel();
+JPanel headerPanel = new JPanel();
+JPanel buttonPanel = new JPanel();
+JPanel centerPanel = new JPanel();
+
+//set panel layouts 
+content.setLayout(new BorderLayout());
+headerPanel.setLayout(new FlowLayout());
+buttonPanel.setLayout(new FlowLayout());
+centerPanel.setLayout(new GridLayout(4,3,10,5));
+
+//define labels 
+JLabel pageHeaderLbl = new JLabel(" Bank Account Information ");
+JLabel classNameLbl = new JLabel("Name and Type:", JLabel.RIGHT);
+JLabel accBalLbl = new JLabel("Account Balance:", JLabel.RIGHT);
+//JLabel locationLbl = new JLabel("Account Balance:", JLabel.RIGHT);
+JLabel accNumLbl = new JLabel("Account Number:", JLabel.RIGHT);
+//JLabel timeLbl = new JLabel("Account Number:", JLabel.RIGHT);
+//JLabel lblAccountNum = new JLabel("Account Number:", JLabel.RIGHT);
+JLabel instructorLbl = new JLabel("Customer Manager:", JLabel.RIGHT);
+JLabel blankLbl1 = new JLabel("");
+JLabel blankLbl2 = new JLabel("");
+JLabel blankLbl3 = new JLabel("");
+
+//define textfields
+//JTextField tf_className = new JTextField(10);
+//JTextField tf_classSection = new JTextField(10);
+//JTextField tf_classLocation = new JTextField(10);
+//JTextField tf_classTime = new JTextField(10);
+//JTextField tf_classInstructor = new JTextField(10);
+
+
+//define textfields for bank account program
+JTextField tf_AccountHolder = new JTextField(10);
+JTextField tf_AccountType = new JTextField(10);
+JTextField tf_AccountBalance = new JTextField(10);
+JTextField tf_AccountNumber = new JTextField(10);
+JTextField tf_AccountManager = new JTextField(10); 
+
+String accBal = tf_AccountBalance.getText();
+//define buttons
+JButton submitBtn = new JButton("Add");
+
+//turn on action listener for submit button
+submitBtn.addActionListener(new ActionListener() 
+{
+public void actionPerformed(ActionEvent e) 
+{
+numOfAccounts++;
+if (numOfAccounts == 1)
+{
+accountone.setAccountHolder(tf_AccountHolder.getText());
+accountone.setAccountType(tf_AccountType.getText());
+//accountone.setAccountBalance(tf_AccountBalance.getText());
+accountone.setAccBal(tf_AccountBalance.getText());
+accountone.setName(tf_AccountNumber.getText());
+//accountone.setName(tf_className.getText());
+//accountone.setSectionID(tf_classSection.getText());
+//accountone.setRoomNumber(tf_classLocation.getText());
+
+
+tf_AccountHolder.setText("");  //Changed text fields for items
+tf_AccountType.setText("");
+tf_AccountBalance.setText("");
+tf_AccountNumber.setText("");
+  
+//tf_className.setText("");
+//tf_classSection.setText("");
+//tf_classLocation.setText("");
+ 
+//double userAmt;  
+            // display the information on a separeted panel
+//JOptionPane.showMessageDialog(null, "Account 1: Name " + 
+//          accountone.getAccountHolder() + "\n            : Type " +
+//          accountone.getAccountType() + "\n            : Balance " + 
+//          accountone.getAccountNumber() + "\n            : Number " +
+//          accountone.getAccountBalance());
+//        }
+//      }
+//    });
+
+  
+
+JOptionPane.showMessageDialog(null, "Account 1 Name: " + accountone.getAccountHolder() + "\n" + "Type: " +
+								
+            					//accountone.getAccountNumber() + "\n" +
+
+								accountone.getAccountType()   + "\n" +
+//                              accountone.getName() + "\n" + 
+								accountone.getAccBal());
+	}
+  }
+});
+
+
+
+
+
+
+//add objects to panels 
+headerPanel.add(pageHeaderLbl);
+
+centerPanel.add(classNameLbl); //row 1
+
+  //add in tf renamed
+centerPanel.add(tf_AccountHolder);
+centerPanel.add(tf_AccountType);  
+//centerPanel.add(tf_className);
+//centerPanel.add(tf_classSection);
+//centerPanel.add(
+centerPanel.add(accBalLbl); //row 2
+//centerPanel.add(locationLbl); //row 2
+centerPanel.add(tf_AccountBalance);
+//centerPanel.add(tf_classLocation);
+centerPanel.add(blankLbl1);
+//
+//centerPanel.add(tf_AccountNumber);
+centerPanel.add(accNumLbl); //row 3
+//centerPanel.add(timeLbl); //row 3
+centerPanel.add(tf_AccountNumber);
+//centerPanel.add(tf_classTime);
+centerPanel.add(blankLbl2);
+
+//add account manager
+
+centerPanel.add(instructorLbl); //row 4
+centerPanel.add(tf_AccountManager);  // used instructor lbl as manager
+//centerPanel.add(tf_classInstructor);
+centerPanel.add(blankLbl3);
+
+buttonPanel.add(submitBtn);
+
+
+
+
+//add sub panels to main panel.
+content.add(headerPanel, BorderLayout.NORTH);
+content.add(centerPanel, BorderLayout.CENTER);
+content.add(buttonPanel, BorderLayout.SOUTH);
+
+
+
+
+//define window frame and display
+JFrame window = new JFrame("Bank Account - Menu");
+
+window.add(content);
+
+window.setSize(500,200);
+window.setLocation(400,400);
+window.setResizable(false);
+window.setVisible(true);
+}
+}
+
+
+//Here is where accessor and mutator class starts
+class Account    //Create Account class from Course
+{ 
+ private String AccountNumber;
+ private String AccountType;
+ private String AccountHolder;
+ 
+ private double AccountBalance;
+ private double startingBalance = 500.00;
+ private double userAmt;
+ private double accBal = 0.0;
+ //private double AccountBalance = Double.parseDouble(AccountBalance);
+ 
+ private String Name;
+ private String sectionID; //not used
+ private String roomNumber; //not used
+// public double AccountBalance = Double.parseDouble(AccountBalance);
+ private String buildingNumber; //not used
+ static private int CourseCount=0; //not used
+
+ /******************* Mutator Methods ****************/
+ 
+ public void setAccountNumber (String AccountNumber)
+ {
+   this.AccountNumber = AccountNumber;
+   
+ }
+ public void setAccountHolder (String AccountHolder)
+ {
+   this.AccountHolder = AccountHolder;
+  
+ }
+  public void setAccBal (String accBal)
+ {
+   this.accBal = Float.parseFloat(accBal);  //set balance field
+  
+ }
+ //Not Used Line Below
+ public void setRoomNumber (String roomNumber)
+ {
+    this.roomNumber= roomNumber;
+    buildingNumber = roomNumber.substring(0,2) + "00";
+ }
+
+ //Sets AccountType variable
+ public void setAccountType (String AccountType)
+{
+  this.AccountType = AccountType;
+}
+
+//sets opening account balance
+ public double setAccountBalance (double AccountBalance)
+ {
+   this.AccountBalance = 500.00;
+   return AccountBalance;
+ }
+
+//sets account holder name  
+public void setName (String name)
+ {
+   this.Name = "Annnabelle";
+//   return Name;
+ }
+
+  
+  
+ //Not used
+ public void setSectionID (String sectionID)
+ {
+    this.sectionID= sectionID;
+    CourseCount++;
+ } 
+//  public double setAccountBalance()
+
+ /******************* Accessor Methods ****************/
+
+ //gets Account Number  
+ public String getAccountNumber()
+ {
+   return AccountNumber;
+ }
+ //gets AccountType
+ public String getAccountType()
+ {
+   return AccountType;
+ }
+ //Gets AccountHolder name
+ public String getAccountHolder()
+ {
+   return AccountHolder;
+ }
+//gets name
+   //Gets  name
+ public String getName()
+ {
+   return AccountHolder;
+ }
+ public double getAccBal() //return account balance
+ {
+   return accBal;
+ }
+  
+//not used
+ public String getRoomNumber()
+ {
+    return roomNumber;
+ }
+ //not used
+ public String getSectionID()
+ {
+    return sectionID;
+ }
+ //not used
+ public String getBuildingNumber()
+ {
+    return buildingNumber;
+ }
+ //not used
+ static public int getCourseCount()
+ {
+    return CourseCount;
+ }
+
+ //Gets AccountBalance
+ public double getAccountBalance()
+ {
+   
+   return AccountBalance;
+ }
+//withdraw method for AccountBalance
+public double withdraw (double userAmt)
+{
+  AccountBalance -= userAmt;
+  return AccountBalance;
+}
+//deposit method for AccountBalance
+public double deposit (double userAmt)
+{
+  AccountBalance += userAmt;
+  return AccountBalance;
+
+}
+// Next Lines are not needed yet
+//public double getAccountBalance() {
+//  return AccountBalance;
+//}
+//not used but written for later
+public double savingsAccount( double startingBalance ) {
+  AccountBalance = startingBalance;
+  return AccountBalance;
+}
+//public int parseWithDefault(String s, int dep) {
+//    try {
+//        return Integer.parseInt(s);
+//    }
+//    catch (NumberFormatException e) {
+// It's OK to ignore "e" here because returning a default value is the documented behaviour on invalid input.
+//        return dep;
+//    }
+//  }
+  }
