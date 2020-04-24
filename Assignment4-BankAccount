@@ -1,0 +1,210 @@
+//***********************************************
+//java 10.0.2
+//Levi McCann
+//CIS 62 Deardorff
+//Assignment 4 Create simple Bank Account (Console)
+//04/01/2020
+//************************************************
+
+public class Main //Change to YourLastName_BankAccount   // Can be copied and pasted using Main, or change Main to YourName_BankAccount
+{
+ public static void main (String []args)
+ {
+    Account classOne = new Account();
+    Account classTwo = new Account();
+    Account accountone = new Account( 500.00 );
+    Account accountTwo = new Account( 500.00 );
+  
+    accountone.setAccountNumber("006020304");
+    accountTwo.setAccountNumber("005010204");
+  //  accountone.getAccountBalance();
+    classOne.setRoomNumber("2209");
+    classOne.setSectionID("2019S-S8640-CIS62");  
+   accountone.setAccountType("Savings");
+   System.out.println("Your account type is: " + (accountone.getAccountType()));
+      accountTwo.setAccountType("Credit Card");
+   System.out.println("Your account type is: " + (accountTwo.getAccountType()));
+  //  classTwo.setRoomNumber("1301A");
+  //  classTwo.setSectionID("2019S-S2532-CIS76");
+
+   
+   
+//    System.out.println(classOne.getSectionID() + " meets in room " + classOne.getRoomNumber() +
+//                       " in building " + classOne.getBuildingNumber());
+  //  System.out.println(classTwo.getSectionID() + " meets in room " + classTwo.getRoomNumber() +
+  //                     " in building " + classTwo.getBuildingNumber());
+   
+//    System.out.println("I am enrolled in " + classTwo.getCourseCount() + " classes this semester!");
+    System.out.println("Your account number is " + (accountone.getAccountNumber()));
+   
+    System.out.println("Your account type: " + (accountone.getAccountType()));
+
+    System.out.println("Your account number is: " + (accountTwo.getAccountNumber()));
+    System.out.println("Your account type is: " + (accountTwo.getAccountType()));
+    
+  //  System.out.println("The account balance is: $" + (accountone.getAccountBalance()));
+ }
+}
+
+//Here is where accessor and mutator class starts
+class Account    //Create Account class from Course
+{ 
+ private String AccountNumber;
+ private String AccountType;
+ private String AccountHolder;
+ 
+ private double AccountBalance;
+ private double startingBalance = 500.00;
+ private double userAmt;
+ private double accBal = 0.0;
+ //private double AccountBalance = Double.parseDouble(AccountBalance);
+ 
+ private String Name;
+ private String sectionID; //not used
+ private String roomNumber; //not used
+// public double AccountBalance = Double.parseDouble(AccountBalance);
+ private String buildingNumber; //not used
+ static private int CourseCount=0; //not used
+
+ /******************* Mutator Methods ****************/
+ 
+ public void setAccountNumber (String AccountNumber)
+ {
+   this.AccountNumber = AccountNumber;
+   
+ }
+ public void setAccountHolder (String AccountHolder)
+ {
+   this.AccountHolder = AccountHolder;
+  
+ }
+  public void setAccBal (String accBal)
+ {
+   this.accBal = Float.parseFloat(accBal);  //set balance field
+  
+ }
+ //Not Used Line Below
+ public void setRoomNumber (String roomNumber)
+ {
+    this.roomNumber= roomNumber;
+    buildingNumber = roomNumber.substring(0,2) + "00";
+ }
+
+ //Sets AccountType variable
+ public void setAccountType (String AccountType)
+{
+  this.AccountType = AccountType;
+}
+
+//sets opening account balance
+ public double setAccountBalance (double AccountBalance)
+ {
+   this.AccountBalance = 500.00;
+   return AccountBalance;
+ }
+
+//sets account holder name  
+public void setName (String name)
+ {
+   this.Name = "Annnabelle";
+//   return Name;
+ }
+
+  
+  
+ //Not used
+ public void setSectionID (String sectionID)
+ {
+    this.sectionID= sectionID;
+    CourseCount++;
+ } 
+//  public double setAccountBalance()
+
+ /******************* Accessor Methods ****************/
+
+ //gets Account Number  
+ public String getAccountNumber()
+ {
+   return AccountNumber;
+ }
+ //gets AccountType
+ public String getAccountType()
+ {
+   return AccountType;
+ }
+ //Gets AccountHolder name
+ public String getAccountHolder()
+ {
+   return AccountHolder;
+ }
+//gets name
+   //Gets  name
+ public String getName()
+ {
+   return AccountHolder;
+ }
+ public double getAccBal() //return account balance
+ {
+   return accBal;
+ }
+  
+//not used
+ public String getRoomNumber()
+ {
+    return roomNumber;
+ }
+ //not used
+ public String getSectionID()
+ {
+    return sectionID;
+ }
+ //not used
+ public String getBuildingNumber()
+ {
+    return buildingNumber;
+ }
+ //not used
+ static public int getCourseCount()
+ {
+    return CourseCount;
+ }
+
+ //Gets AccountBalance
+ public double getAccountBalance()
+ {
+   
+   return AccountBalance;
+ }
+//withdraw method for AccountBalance
+public double withdraw (double userAmt)
+{
+  AccountBalance -= userAmt;
+  return AccountBalance;
+}
+//deposit method for AccountBalance
+public double deposit (double userAmt)
+{
+  AccountBalance += userAmt;
+  return AccountBalance;
+
+}
+//public double getAccountBalance() {
+//  return AccountBalance;
+//}
+//not used but written for later
+public double savingsAccount( double startingBalance ) {
+  AccountBalance = startingBalance;
+  return AccountBalance;
+}
+//public int parseWithDefault(String s, int dep) {
+//    try {
+//        return Integer.parseInt(s);
+//    }
+//    catch (NumberFormatException e) {
+        // It's OK to ignore "e" here because returning a default value is the documented behaviour on invalid input.
+//        return dep;
+//    }
+//  }
+  }
+}
+
