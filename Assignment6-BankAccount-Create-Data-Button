@@ -1,0 +1,493 @@
+//*******************************************************************
+// java 10.0.2
+// Levi McCann
+// 04/24/2020
+// Deardorff CIS 62
+// Assignment 6
+//*******************************************************************
+// USE this one. It has the "Create Data" Button that works correctly
+// That is what is called for in Assignment 6 for CIS 62 at Shasta Col.
+// --LJM
+//
+//********************************************************************
+
+import java.lang.Math; // headers MUST be above the first class
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class McCann_BankRecords extends JFrame 
+{
+ static Account account01 = new Account();
+// static Course course2 = new Course();  <-- Next 3 lines not needed -->
+// static Course course3 = new Course();  <--						  -->
+// static Course course4 = new Course();  <--                         -->
+ static int numOfCourses = 0;
+  
+  //Define Panels
+  static  JPanel menuScreen = new JPanel();
+  static  JPanel addScreen = new JPanel();
+  static  JPanel listScreen = new JPanel();
+  static  JPanel updateScreen = new JPanel();
+  static  JPanel deleteScreen = new JPanel();
+   
+  static  JPanel headerPanel = new JPanel();
+  static  JPanel buttonPanel = new JPanel();
+  static  JPanel centerPanel = new JPanel();
+  
+  //define labels   
+  static  JLabel pageHeaderLbl = new JLabel("     Account Info:     ");  //Changed from Class Schedulle
+  //
+  static  JLabel classNameLbl = new JLabel("Name and Type:", JLabel.RIGHT);  //Name and Type:
+ // changed to accLbl from locationLbl 
+  static  JLabel accLbl = new JLabel("Number:", JLabel.RIGHT);  // Account Num
+  //static  JLabel locationLbl = new JLabel("Number:", JLabel.RIGHT);  // Account Num
+ 
+  static  JLabel accBalLbl = new JLabel("Balance:", JLabel.RIGHT);  // balance
+//  static  JLabel timeLbl = new JLabel("Balance:", JLabel.RIGHT);  // balance
+  // changed from instructorLbl
+  static  JLabel inputLbl = new JLabel("Input Amount:", JLabel.RIGHT);  // number for deposit or withdraw
+//  static  JLabel instructorLbl = new JLabel("Input Amount:", JLabel.RIGHT);  // number for deposit or withdraw
+  static  JLabel blankLbl1 = new JLabel("");
+  static  JLabel blankLbl2 = new JLabel("");
+  static  JLabel blankLbl3 = new JLabel("");
+   
+    //define textfields
+  static  JTextField tf_className = new JTextField(10);
+  
+  //  define textfields for new labels
+  static  JTextField tf_accType = new JTextField(10);    //Account Type
+//  static  JTextField tf_classSection = new JTextField(10);
+  static  JTextField tf_accNum = new JTextField(10);  // tf Account Number
+//  static  JTextField tf_classLocation = new JTextField(10);
+  static  JTextField tf_accBal = new JTextField(10);
+//  static  JTextField tf_classTime = new JTextField(10);
+  static  JTextField tf_input = new JTextField(10);
+//  static  JTextField tf_classInstructor = new JTextField(10);
+  
+     //define buttons
+  //add screen buttons
+  static  JButton addSubmitBtn = new JButton("Submit");
+  static  JButton addClearBtn = new JButton("Clear");
+  static  JButton addBackBtn = new JButton("Back");
+  
+  //menu screen buttons
+  static  JButton addBtn = new JButton("Create Data");   // Creates new Data  CREATE DATA Button change from Add Record
+    static  JButton listBtn = new JButton("Deposit");  // This will be the Deposit Button
+//  static  JButton updateBtn = new JButton("Withdraw");  //This will be the withdraw Button
+  
+//  static  JButton listBtn = new JButton("List");  // This will be the Deposit Button
+//  static  JButton updateBtn = new JButton("Update");  //This will be the withdraw Button
+  static  JButton deleteBtn = new JButton("Delete");  // This will Delete record
+  static  JButton updateBtn = new JButton("Withdraw");  //This will be the withdraw Button
+   
+  
+ public McCann_BankRecords()
+ {
+   
+ }
+  
+ public static void main (String []args)
+ {
+	   
+    //set panel layouts   
+    menuScreen.setLayout(new GridLayout(2,2,25,25));
+    addScreen.setLayout(new BorderLayout());
+    headerPanel.setLayout(new FlowLayout());
+    buttonPanel.setLayout(new FlowLayout());
+    centerPanel.setLayout(new GridLayout(4,3,10,5));
+ 
+    turnOnActionListeners();
+ 
+    addObjectsToAddScreen();
+ 
+   
+    menuScreen.add(addBtn);
+    menuScreen.add(updateBtn);
+    menuScreen.add(deleteBtn);
+    menuScreen.add(listBtn);
+   
+   
+    //define window frame and display
+    JFrame window = new JFrame("CIS 62 - Spring Schedule");
+   
+    window.setLayout(new FlowLayout());
+    window.add(menuScreen);
+    window.add(addScreen);
+   
+    menuScreen.setVisible(true);
+    addScreen.setVisible(false);
+   
+    window.setSize(500,200);
+    window.setLocation(400,400);
+    window.setResizable(false);
+    window.setVisible(true);
+ }
+  
+  
+  
+  
+  
+  
+  
+ static public void addRecord()
+ {
+    numOfCourses++;
+    if (numOfCourses == 1)
+    {
+      account01.setAccountHolder(tf_className.getText());
+//      course1.setName(tf_className.getText());
+    
+      //  Sets the data that is being created
+      
+	  account01.setAccountType(tf_accType.getText());
+      account01.setAccountNumber(tf_accNum.getText());
+//      account01.setAccountNumber(tf_accType.getText());
+      account01.setAccBal(tf_accBal.getText());
+      
+//      course1.setSectionID(tf_accType.getText());
+//      course1.setRoomNumber(tf_accNum.getText());
+
+      clearAddScreen(); //when adding a record call the clear method
+      
+      //This button option panel shows what data is being created.
+
+      JOptionPane.showMessageDialog(null, "Account 1: Name " + account01.getAccountHolder() + "\n" +
+                                    "Type: " + account01.getAccountType() + "\n" + 
+                                    "Number: " + account01.getAccountNumber() + "\n"  +
+        							"Balance: " + account01.getAccBal());
+    }
+ }
+  
+  
+  
+  
+  
+  
+  
+ static public void clearAddScreen()
+ {
+   tf_className.setText("");
+   tf_accType.setText("");
+   tf_accNum.setText("");   // Account Number
+   tf_accBal.setText("");   //accBal
+   tf_input.setText("");    // input for withdraw and deposit
+   
+//   tf_classSection.setText("");  -- not needed
+//   tf_classLocation.setText("");  --not needed
+//   tf_accBal.setText("");
+//   tf_classTime.setText("");  --not needed
+//   
+//   tf_classInstructor.setText("");
+ }
+  
+  
+  
+  
+  
+  
+  
+  
+ static public void addObjectsToAddScreen() //adding objects to add screen panel
+ {
+       //add objects to panels   
+    headerPanel.add(pageHeaderLbl);
+   
+    centerPanel.add(classNameLbl);     //row 1  Name Label
+    centerPanel.add(tf_className);
+    centerPanel.add(tf_accType);       // AccountType
+//    centerPanel.add(tf_classSection);   
+    
+    centerPanel.add(accLbl);      //row 2   -- Account Number label
+    //centerPanel.add(locationLbl);      //row 2  --line ommitted use above line
+    // changed tf
+    centerPanel.add(tf_accNum);         // added Number tf
+//    centerPanel.add(tf_classLocation);
+    centerPanel.add(blankLbl1);
+    
+    centerPanel.add(accBalLbl);          //row 3  -- balance label
+//    centerPanel.add(timeLbl);          //row 3
+    centerPanel.add(tf_accBal);
+    centerPanel.add(blankLbl2);
+    
+   
+    centerPanel.add(inputLbl);    //row 4  input label
+   // centerPanel.add(instructorLbl);    //row 4
+    centerPanel.add(tf_input);           // add tf_input box
+//    centerPanel.add(tf_classInstructor);
+    centerPanel.add(blankLbl3);
+    
+    buttonPanel.add(addBackBtn);
+    buttonPanel.add(addSubmitBtn);
+    buttonPanel.add(addClearBtn);
+   
+   
+    //add sub panels to main panel.
+    addScreen.add(headerPanel, BorderLayout.NORTH);
+    addScreen.add(centerPanel, BorderLayout.CENTER);
+    addScreen.add(buttonPanel, BorderLayout.SOUTH);
+ }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  ////all action listeners are done here
+ static public void turnOnActionListeners()
+ {
+      //turn on action listener for submit button
+	// Menu buttons
+    addBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           menuScreen.setVisible(false);
+    	   addScreen.setVisible(true);
+        }
+    });
+   
+    //Add screen buttons
+    addSubmitBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           addRecord();
+        }
+    });
+    addClearBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           clearAddScreen(); //also call the clear method
+        }
+    });
+    addBackBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           menuScreen.setVisible(true);
+    	   addScreen.setVisible(false);
+        }
+    });
+ }
+}
+
+
+
+
+
+//Here is where accessor and mutator class starts
+class Account    //Create Account class from Course
+{ 
+ private String AccountNumber;
+ private String AccountType;
+ private String AccountHolder;
+ 
+ private double AccountBalance;
+ private double startingBalance = 500.00;
+ private double userAmt;
+ private double accBal = 0.0;
+ //private double AccountBalance = Double.parseDouble(AccountBalance);
+ 
+ private String Name;
+ private String sectionID; //not used
+ private String roomNumber; //not used
+// public double AccountBalance = Double.parseDouble(AccountBalance);
+ private String buildingNumber; //not used
+ static private int CourseCount=0; //not used
+
+ /******************* Mutator Methods ****************/
+ 
+ public void setAccountNumber (String AccountNumber)
+ {
+   this.AccountNumber = AccountNumber;
+   
+ }
+ public void setAccountHolder (String AccountHolder)
+ {
+   this.AccountHolder = AccountHolder;
+  
+ }
+  public void setAccBal (String accBal)
+ {
+   this.accBal = Float.parseFloat(accBal);  //set balance field
+  
+ }
+ //Not Used Line Below
+ public void setRoomNumber (String roomNumber)
+ {
+    this.roomNumber= roomNumber;
+    buildingNumber = roomNumber.substring(0,2) + "00";
+ }
+
+ //Sets AccountType variable
+ public void setAccountType (String AccountType)
+{
+  this.AccountType = AccountType;
+}
+
+//sets opening account balance
+ public double setAccountBalance (double AccountBalance)
+ {
+   this.AccountBalance = 500.00;
+   return AccountBalance;
+ }
+
+//sets account holder name  
+public void setName (String name)
+ {
+   this.Name = "Annnabelle";
+//   return Name;
+ }
+
+  
+  
+ //Not used
+ public void setSectionID (String sectionID)
+ {
+    this.sectionID= sectionID;
+    CourseCount++;
+ } 
+//  public double setAccountBalance()
+
+ /******************* Accessor Methods ****************/
+
+ //gets Account Number  
+ public String getAccountNumber()
+ {
+   return AccountNumber;
+ }
+ //gets AccountType
+ public String getAccountType()
+ {
+   return AccountType;
+ }
+ //Gets AccountHolder name
+ public String getAccountHolder()
+ {
+   return AccountHolder;
+ }
+//gets name
+   //Gets  name
+ public String getName()
+ {
+   return AccountHolder;
+ }
+ public double getAccBal() //return account balance
+ {
+   return accBal;
+ }
+  
+//not used
+ public String getRoomNumber()
+ {
+    return roomNumber;
+ }
+ //not used
+ public String getSectionID()
+ {
+    return sectionID;
+ }
+ //not used
+ public String getBuildingNumber()
+ {
+    return buildingNumber;
+ }
+ //not used
+ static public int getCourseCount()
+ {
+    return CourseCount;
+ }
+
+ //Gets AccountBalance
+ public double getAccountBalance()
+ {
+   
+   return AccountBalance;
+ }
+//withdraw method for AccountBalance
+public double withdraw (double userAmt)
+{
+  AccountBalance -= userAmt;
+  return AccountBalance;
+}
+//deposit method for AccountBalance
+public double deposit (double userAmt)
+{
+  AccountBalance += userAmt;
+  return AccountBalance;
+
+}
+//public double getAccountBalance() {
+//  return AccountBalance;
+//}
+//not used but written for later
+public double savingsAccount( double startingBalance ) {
+  AccountBalance = startingBalance;
+  return AccountBalance;
+}
+//public int parseWithDefault(String s, int dep) {
+//    try {
+//        return Integer.parseInt(s);
+//    }
+//    catch (NumberFormatException e) {
+        // It's OK to ignore "e" here because returning a default value is the documented behaviour on invalid input.
+//        return dep;
+//    }
+//  }
+  }
+
+
+
+
+//class Course
+//{
+// private String roomNumber;
+// private String sectionID;
+// private String buildingNumber;
+// private String name; 
+// static private int CourseCount=0; 
+ 
+ /******************* Mutator Methods ****************/
+// public void setRoomNumber (String roomNumber)
+// {
+//    this.roomNumber= roomNumber;
+//    buildingNumber = roomNumber.substring(0,2) + "00";
+// }
+// public void setSectionID (String sectionID)
+// {
+//    this.sectionID= sectionID;
+//    CourseCount++;
+// } 
+//  public void setName (String name)
+// {
+//    this.name= name;
+// } 
+//  
+// /******************* Accessor Methods ****************/  
+// public String getRoomNumber()
+// {
+//    return roomNumber;
+// }
+// public String getName()
+// {
+//    return name;
+// }  
+// public String getSectionID()
+// {
+//    return sectionID;
+// }
+// public String getBuildingNumber()
+// {
+//    return buildingNumber;
+// }
+// static public int getCourseCount()
+// {
+//    return CourseCount;
+// }
+//}
