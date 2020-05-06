@@ -1,0 +1,934 @@
+//*******************************************************************
+// java 10.0.2
+// Levi McCann
+// Assignment 8 Bank_ATM_W_SQL
+// 05/05/20
+// The Build DataBase Button Works correctly on this 
+// I have to change the code to make the other buttons work correctly-->
+// This is the work in progress to:
+// Assignment 8 CIS 62 Java Programming: Deardorff
+// Shasta College
+//*******************************************************************
+
+import java.lang.Math; // headers MUST be above the first class
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.sql.*;
+
+
+public class Mccann_ATM_SQL extends JFrame 
+{
+  
+ static Account account1 = new Account();
+ //static Course course2 = new Course();
+ //static Course course3 = new Course();
+ //static Course course4 = new Course();
+ //static int numOfCourses = 0;
+  
+  //Define Panels
+  static  JPanel menuScreen = new JPanel();
+  static  JPanel addScreen = new JPanel();
+  static  JPanel listScreen = new JPanel();
+  static  JPanel updateScreen = new JPanel();
+  static  JPanel deleteScreen = new JPanel();
+   
+  static  JPanel headerPanel = new JPanel();
+  static  JPanel buttonPanel = new JPanel();
+  static  JPanel centerPanel = new JPanel();
+  
+  static  JPanel u_headerPanel = new JPanel();
+  static  JPanel u_buttonPanel = new JPanel();
+  static  JPanel u_centerPanel = new JPanel();
+  
+  //define labels   
+  static  JLabel pageHeaderLbl = new JLabel("     Account Info:     ");
+  static  JLabel classNameLbl = new JLabel("Account Name and Type:", JLabel.RIGHT);
+  static  JLabel accNumLbl = new JLabel("Number:", JLabel.RIGHT);
+  static  JLabel accBalLbl = new JLabel("Balance:", JLabel.RIGHT);
+  static  JLabel inputLbl = new JLabel("Input:", JLabel.RIGHT);
+  static  JLabel blankLbl1 = new JLabel("");
+  static  JLabel blankLbl2 = new JLabel("");
+  static  JLabel blankLbl3 = new JLabel("");
+  
+  static  JLabel u_pageHeaderLbl = new JLabel("     Account Info:     ");
+  static  JLabel u_classNameLbl = new JLabel("Name and Type:", JLabel.RIGHT);
+  static  JLabel u_accNumLbl = new JLabel("Number:", JLabel.RIGHT);
+  static  JLabel u_accBalLbl = new JLabel("Balance:", JLabel.RIGHT);
+  static  JLabel u_inputLbl = new JLabel("Input:", JLabel.RIGHT);
+  static  JLabel u_blankLbl1 = new JLabel("");
+  static  JLabel u_blankLbl2 = new JLabel("");
+  static  JLabel u_blankLbl3 = new JLabel("");  
+   
+  //define new textFields
+  static  JTextField tf_className = new JTextField(10);           // changed from className
+  static  JTextField tf_classAccType = new JTextField(10);
+  static  JTextField tf_classAccNumber = new JTextField(10);
+  static  JTextField tf_classAccBal = new JTextField(10);
+  static  JTextField tf_classInput = new JTextField(10);
+  
+  //define textfields
+  //static  JTextField tf_className = new JTextField(10);
+  //static  JTextField tf_classSection = new JTextField(10);
+  //static  JTextField tf_classLocation = new JTextField(10);
+  //static  JTextField tf_classTime = new JTextField(10);
+  //static  JTextField tf_classInstructor = new JTextField(10);
+  
+  /// Create new Update TextFields
+  
+  static  JTextField u_tf_className = new JTextField(10);
+  static  JTextField u_tf_classAccType = new JTextField(10);
+  static  JTextField u_tf_classAccNumber = new JTextField(10);
+  static  JTextField u_tf_classAccBal = new JTextField(10);
+  static  JTextField u_tf_classInput = new JTextField(10);  
+  
+  //static  JTextField u_tf_className = new JTextField(10);
+  //static  JTextField u_tf_classSection = new JTextField(10);
+  //static  JTextField u_tf_classLocation = new JTextField(10);
+  //static  JTextField u_tf_classTime = new JTextField(10);
+  //static  JTextField u_tf_classInstructor = new JTextField(10);  
+  
+     //define buttons
+  //add screen buttons
+  static  JButton addSubmitBtn = new JButton("Submit");
+  static  JButton addClearBtn = new JButton("Clear");
+  static  JButton addBackBtn = new JButton("Back");
+
+  //add screen buttons
+  static  JButton u_SubmitBtn = new JButton("Submit");
+  static  JButton u_ClearBtn = new JButton("Clear");
+  static  JButton u_BackBtn = new JButton("Back");
+  
+  //menu screen buttons
+  static  JButton addBtn = new JButton("Add Data");
+  static  JButton listBtn = new JButton("List");
+  static  JButton updateBtn = new JButton("Update");
+  static  JButton deleteBtn = new JButton("Delete");
+  /////////////////////////////////////////////////////////
+  static  JButton buildBtn = new JButton("Build Database");
+  /////////////////////////////////////////////////////////
+  
+ public Mccann_ATM_SQL()
+ {
+   
+ }
+  
+ public static void main (String []args)
+ {
+	   
+    //set panel layouts   
+   ///////////////////////////////////////////////
+    menuScreen.setLayout(new GridLayout(3,2,25,25));
+   ///////////////////////////////////////////////
+    addScreen.setLayout(new BorderLayout());
+    headerPanel.setLayout(new FlowLayout());
+    buttonPanel.setLayout(new FlowLayout());
+    centerPanel.setLayout(new GridLayout(4,3,10,5));
+   
+    updateScreen.setLayout(new BorderLayout());
+    u_headerPanel.setLayout(new FlowLayout());
+    u_buttonPanel.setLayout(new FlowLayout());
+    u_centerPanel.setLayout(new GridLayout(4,3,10,5));
+ 
+    turnOnActionListeners();
+ 
+    addObjectsToAddScreen();
+ 
+   
+    menuScreen.add(addBtn);
+    menuScreen.add(updateBtn);
+    menuScreen.add(deleteBtn);
+    menuScreen.add(listBtn);
+    ///////////////////////////////////////////
+    menuScreen.add(buildBtn);
+    ///////////////////////////////////////////
+   
+    //define window frame and display
+    JFrame window = new JFrame("Account Information:");
+   
+    window.setLayout(new FlowLayout());
+    window.add(menuScreen);
+    window.add(addScreen);
+    window.add(updateScreen);
+   
+    menuScreen.setVisible(true);
+    addScreen.setVisible(false);
+    updateScreen.setVisible(false);
+   
+    window.setSize(500,200);
+    window.setLocation(400,400);
+    window.setResizable(false);
+    window.setVisible(true);
+ }
+  
+  
+//  tf
+  
+  
+  
+  
+ static public void addRecord()
+ {
+    //numOfCourses++;
+    //if (numOfCourses == 1)
+    //{
+      account1.setAccountHolder(tf_className.getText());
+      account1.setAccountType(tf_classAccType.getText());    //Set AccountType
+      account1.setAccountNumber(tf_classAccNumber.getText());  //Set Account Number
+      account1.setInput(tf_classInput.getText());      //Input Field
+      /////////////////////////////////////////////////////
+      account1.writeRecord();
+      ////////////////////////////////////////////////////
+
+      clearAddScreen(); //when adding a record call the clear method
+
+      JOptionPane.showMessageDialog(null, "Account:  and Type: " + account1.getAccountType() + "\n" +
+                                    account1.getAccountHolder() + "\n" + 
+                                    account1.getAccBal());
+    //}
+ }
+  
+  static public void updateRecord()
+ {
+    	    
+      account1.setAccountHolder(u_tf_className.getText());
+      account1.setAccountType(u_tf_classAccType.getText());
+      account1.setAccountNumber(u_tf_classAccNumber.getText());
+      account1.setAccountBalance(u_tf_classAccBal.getText());
+      account1.setInput(u_tf_classInput.getText());
+//    account1.setSectionID(u__classSection.getText());
+//      account1.setRoomNumber(u_tf_classLocation.getText());
+//      account1.setInstructor(u_tf_classInstructor.getText());
+      account1.updateRecord();
+
+      JOptionPane.showMessageDialog(null, "Account 1:  Section " + account1.getAccountType() + "\n" +
+                                    account1.getAccountHolder() + "\n" + 
+                                    account1.getAccBal());
+ }
+  
+  
+  
+  
+  
+  
+ static public void clearAddScreen()
+ {
+   tf_className.setText("");
+   tf_classAccType.setText("");
+   tf_classAccNumber.setText("");
+   tf_classAccBal.setText("");
+   tf_classInput.setText("");
+   
+   
+//   tf_classSection.setText("");
+//   tf_classLocation.setText("");
+//   tf_classTime.setText("");
+//   tf_classInstructor.setText("");
+ }
+  
+  
+  
+  
+  
+  
+  
+  
+ static public void addObjectsToAddScreen() //adding objects to add screen panel
+ {
+       //add objects to panels   
+    headerPanel.add(pageHeaderLbl);
+   
+    centerPanel.add(classNameLbl);     //row 1
+    centerPanel.add(tf_className);
+    centerPanel.add(tf_classAccType); 
+//    centerPanel.add(tf_classSection);  // changed to tf_classAccType
+    
+    centerPanel.add(accNumLbl);      //row 2
+    centerPanel.add(tf_classAccNumber);
+
+   
+   //centerPanel.add(locationLbl);      //row 2
+   // centerPanel.add(tf_classLocation);
+    centerPanel.add(blankLbl1);
+    
+//  Added for Account Balance labels and TextFields
+    centerPanel.add(accBalLbl);          //row 3
+    centerPanel.add(tf_classAccBal);
+    centerPanel.add(blankLbl2);
+   
+   
+   
+ //   centerPanel.add(timeLbl);          //row 3
+ //   centerPanel.add(tf_classTime);
+ //   centerPanel.add(blankLbl2);
+    
+      centerPanel.add(inputLbl);    //row 4
+      centerPanel.add(tf_classInput);
+      centerPanel.add(blankLbl3);
+   
+  // Took out used labels and textField above 
+//    centerPanel.add(instructorLbl);    //row 4
+//    centerPanel.add(tf_classInstructor);
+//    centerPanel.add(blankLbl3);
+    
+    buttonPanel.add(addBackBtn);
+    buttonPanel.add(addSubmitBtn);
+    buttonPanel.add(addClearBtn);
+   
+   
+    //add sub panels to main panel.
+    addScreen.add(headerPanel, BorderLayout.NORTH);
+    addScreen.add(centerPanel, BorderLayout.CENTER);
+    addScreen.add(buttonPanel, BorderLayout.SOUTH);
+   
+          //add objects to update panels   
+    u_headerPanel.add(u_pageHeaderLbl);
+   
+    u_centerPanel.add(u_classNameLbl);     //row 1
+    u_centerPanel.add(u_tf_className);     // Account Holders name
+	u_centerPanel.add(u_tf_classAccType);   // added for account Type
+   
+//   u_centerPanel.add(u_tf_classSection);
+ 
+    u_centerPanel.add(u_accNumLbl);      //row 2  Account Number row starts
+//    u_centerPanel.add(u_locationLbl);      //row 2
+//    u_centerPanel.add(u_tf_classLocation);
+    u_centerPanel.add(u_tf_classAccNumber);
+    u_centerPanel.add(u_blankLbl1);
+    
+    u_centerPanel.add(u_accBalLbl);          //row 3
+    u_centerPanel.add(u_tf_classAccBal);
+    u_centerPanel.add(u_blankLbl2);
+   
+   
+//    u_centerPanel.add(u_timeLbl);          //row 3
+//    u_centerPanel.add(u_tf_classTime);
+//    u_centerPanel.add(u_blankLbl2);
+ 
+  
+    u_centerPanel.add(u_inputLbl);    //row 4
+    u_centerPanel.add(u_tf_classInput);
+    u_centerPanel.add(u_blankLbl3);
+   
+   // use above labels and textFields
+//    u_centerPanel.add(u_instructorLbl);    //row 4
+//    u_centerPanel.add(u_tf_classInstructor);
+//    u_centerPanel.add(u_blankLbl3);
+    
+    u_buttonPanel.add(u_BackBtn);
+    u_buttonPanel.add(u_SubmitBtn);
+    u_buttonPanel.add(u_ClearBtn);
+   
+   
+    //add sub panels to main panel.
+    updateScreen.add(u_headerPanel, BorderLayout.NORTH);
+    updateScreen.add(u_centerPanel, BorderLayout.CENTER);
+    updateScreen.add(u_buttonPanel, BorderLayout.SOUTH);
+ }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  ////all action listeners are done here
+ static public void turnOnActionListeners()
+ {
+      //turn on action listener for submit button
+	// Menu buttons
+   //////////////////////////////////////////////////////
+    buildBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           CreateDB newDB = new CreateDB();
+        }
+    });
+   /////////////////////////////////////////////////////
+    addBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           menuScreen.setVisible(false);
+    	   addScreen.setVisible(true);
+        }
+    });
+    updateBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           menuScreen.setVisible(false);
+           String id = JOptionPane.showInputDialog("Account Number to update?");
+       System.out.println(id);   
+           account1.readRecord(id);
+          
+    	   updateScreen.setVisible(true);
+           //may want to ask for which Account to edit using JOptionPane.showInputDialog
+          
+            double input = Double.parseDouble(u_tf_classInput.getText());
+        //Double.parseDouble(userAmt);
+      		double Tf_input = Double.parseDouble(u_tf_classInput.getText());
+      
+      		double bal = Double.parseDouble(u_tf_classAccBal.getText());
+      		double DepBal =   bal - input ;
+          
+          
+           	u_tf_className.setText(account1.getName());
+            u_tf_classAccType.setText(account1.getAccountType());
+      		u_tf_classAccNumber.setText(account1.getAccountNumber());
+  //          u_tf_classAccBal.setText(account1.getAccBal());
+            u_tf_className.setEditable(false);  //field is output only
+        }
+    });
+   
+    //Add screen buttons
+    addSubmitBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           addRecord();
+        }
+    });
+    addClearBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           clearAddScreen(); //also call the clear method
+        }
+    });
+    addBackBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           menuScreen.setVisible(true);
+    	   addScreen.setVisible(false);
+        }
+    });
+   
+   
+    //update screen buttons
+    u_SubmitBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           updateRecord();
+        }
+    });
+    u_ClearBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           clearAddScreen(); //also call the clear method
+        }
+    });
+    u_BackBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           menuScreen.setVisible(true);
+    	   updateScreen.setVisible(false);
+        }
+    });
+   
+   //list button
+    listBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           String id = JOptionPane.showInputDialog("Account Number to List");  
+           account1.readRecord(id);
+           JOptionPane.showMessageDialog(null, "Account 1:   Type: " + account1.getAccountType() + "\n" +
+                                    account1.getAccountHolder() + "\n" + 
+                                    account1.getAccBal());
+        }
+    });
+   
+      
+   //delete button
+    deleteBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           String id = JOptionPane.showInputDialog("Account record to Delete");  
+           account1.readRecord(id);
+           int result = JOptionPane.showConfirmDialog(null,"Account 1:   Type: " + account1.getAccountType() + "\n" +
+                                    account1.getAccountHolder() + "\n" + 
+                                    account1.getAccBal() + "\n", "Confirm Delete",
+               JOptionPane.YES_NO_OPTION,
+               JOptionPane.QUESTION_MESSAGE);
+            if(result == JOptionPane.YES_OPTION)
+            {
+                account1.deleteRecord(id); //perform the delete
+             
+                account1.setAccountHolder("");
+     			account1.setAccountType("");
+      			account1.setAccountNumber("");
+//may not need this line    //     account1.setAccBal("");
+      			account1.setInput("");
+            }else if (result == JOptionPane.NO_OPTION)
+            {
+              // do nothing, answered no
+            }else 
+            {
+              // do nothing, dialog closed
+            }
+ 
+        }
+    });
+ }
+  
+}
+
+
+//CreateDB class
+
+public class CreateDB
+{
+  // JDBC driver name and database URL
+    // JDBC driver name and database URL
+  static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
+  static final String DB_URL = "jdbc:mysql://localhost/"; 
+  //notice there is no db name this is important later// Database credentials
+  static final String USER = "root";
+  static final String PASS = "";
+  static String AccountType;
+
+  public CreateDB()
+  {
+    Connection conn = null;
+    Connection conn2 = null;
+    Statement stmt = null;
+    Statement stmt2 = null;
+    try
+    {
+      // Register JDBC driver
+      	Class.forName(JDBC_DRIVER);
+  		JOptionPane.showMessageDialog(null, "Driver registered successfully...");
+    }
+    catch (Exception e)
+    {
+      JOptionPane.showMessageDialog(null, e);
+    }
+    
+  
+    try  
+    { 
+      // Open a connection
+      conn = DriverManager.getConnection(DB_URL,USER,PASS);
+      stmt = conn.createStatement(); //set up the statement
+      String sql = "CREATE DATABASE Account;"; // set the sql string
+      stmt.executeUpdate(sql); // execute the sql string
+      JOptionPane.showMessageDialog(null, "Database created successfully...");
+
+      // open another connection to the actual DB
+      // Open a new connection
+      String DB_URL2 = "jdbc:mysql://localhost/Account"; //notice this has the db name
+
+      conn2 = DriverManager.getConnection(DB_URL2,USER,PASS); //this is the new connection
+      stmt2 = conn2.createStatement(); //set up the statement in the new conn
+      sql = "CREATE TABLE Account " +
+        "(AccountType VARCHAR(25) not NULL, " +
+        " AccountNumber VARCHAR(25), " +
+        " AccountBalance DOUBLE(25,2), " +
+        " AccountHolder VARCHAR(25), " +
+        " InputAmt DOUBLE(25,2), " +
+        " ClassDate VARCHAR(25), " +
+        " PRIMARY KEY ( AccountType ))"; //set the sql string
+      stmt2.executeUpdate(sql); // execute the sql
+      JOptionPane.showMessageDialog(null, "Created table in the database...");
+
+      // insert data into the table
+      sql = "INSERT INTO Account " +
+        "(AccountType, AccountNumber, AccountBalance, AccountHolder, InputAmt, ClassDate ) " +
+        "VALUES (?, ?, ?, ?, ?, ?)"; // set the sql string
+      // the ??? are place holders for the next part
+      PreparedStatement preparedStmt = conn2.prepareStatement(sql); // create the prepared statement
+ 
+      //the following lines load the ? fields for inserting
+      preparedStmt.setString (1, "Savings");
+      preparedStmt.setString (2, "2209");
+      preparedStmt.setDouble (3, 2200.00);
+      preparedStmt.setString (4, "Levi McCann");
+      preparedStmt.setDouble (5, 0000.00);
+      preparedStmt.setString (6, "Tuesdays at 7:00 p.m.");
+      preparedStmt.execute(); //insert the record
+      preparedStmt.setString (1, "Checking");
+      preparedStmt.setString (2, "2210");
+      preparedStmt.setDouble (3, 1500.00);
+      preparedStmt.setString (4, "Annabelle Roxy");
+      preparedStmt.setDouble (5, 1500.00);
+      preparedStmt.setString (6, "MWF at 1:00 p.m.");
+      preparedStmt.execute(); //insert the record   
+      //use setDouble to set a double value
+      
+      JOptionPane.showMessageDialog(null, "Inserted records into the table...");
+  
+      // read a record from the table to prove it worked
+      sql = "select * from Account where  AccountType = ?";
+      
+      
+      // using a second PreparedStatement, because the first one was opened for insert
+      PreparedStatement preparedStmt2 = conn2.prepareStatement(sql); //this one is opened for select
+ 
+      // a simple method of selecting data from the database
+      String sectionID = JOptionPane.showInputDialog(null, "Enter Account Type");
+      preparedStmt2.setString (1, AccountType); // pass the entered account number to
+     
+      
+      // to the prepared statement
+      ResultSet rs = preparedStmt2.executeQuery(); // execute the select
+      while (rs.next()) //loop through the results. Since there is only 1 row,
+        // this will only execute once
+      {
+        JOptionPane.showMessageDialog(null, "Name: " + rs.getString("AccountHolder") + "\n is scheduled for  " + rs.getString("ClassDate") + 
+                                     "Account Number: " + rs.getString("AccountNumber"));
+        //here is how to pass the result of the select to the text field
+        //myAccountTextField.setText(rs.getString("AccountNumber"));
+      }
+
+      
+      // update a row to a new date and time
+      sql = "update Account set ClassDate = ? where AccountType = ?";
+      
+      
+      // using a second PreparedStatement, because the first one was opened for insert
+      PreparedStatement preparedStmt3 = conn2.prepareStatement(sql); //this one is opened for select
+      preparedStmt3.setString (1, "MWF at 1:30 p.m."); // pass the entered account number to
+      // to the prepared statement
+      preparedStmt3.setString (2, "S9911"); // pass the entered account number to
+      // to the prepared statement
+      preparedStmt3.executeUpdate(); // execute the select
+
+
+      //STEP 6: Clean-up environment. You want to always do this.
+
+      stmt.close();
+      conn.close();
+      stmt2.close();
+      conn2.close();
+    }catch(SQLException se)
+    {
+      //Handle errors for JDBC
+      se.printStackTrace();
+    }catch(Exception e)
+    {
+      //Handle errors for Class.forName
+      e.printStackTrace();
+    }
+
+
+  }//end main
+}//end of CreateDB
+
+
+
+
+
+
+class Account
+{
+  /////////////////////////////////////////////////////////////////////////////////////////
+    // JDBC driver name and database URL
+  //static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+  static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
+  String DB_URL2 = "jdbc:mysql://localhost/AccountDB"; //notice this has the db name
+  
+  // Database credentials
+  static final String USER = "root";
+  static final String PASS = "";
+  
+  Connection conn2 = null;
+  Statement stmt2 = null;
+
+  //////////////////////////////////////////////////////////////////////////////////////////
+
+ private String AccountHolder;
+ private String AccountType;
+ private String AccountNumber;
+ private double AccountBalance = 0.0;
+ private double InputAmt = 0.00;
+ private double accBal = 0.0;
+ private String accBal1 ;   // used to convert Bal to double abover
+ private double accDep = 0.0;
+ private double accWith = 0.0;
+ private String amt;
+ private double accInput = 0.0;
+ private String classDate ;
+ //private String roomNumber;
+ //private String sectionID;
+ //private String buildingNumber;
+ //private String classname;
+ //private String Instructor;
+ //private String classDate;
+ static private int AccountCount=0; 
+ 
+ //******************* Mutator Methods ****************
+ 
+ public void setAccountNumber (String AccountNumber)
+ {
+   this.AccountNumber = AccountNumber;
+ }
+  
+ public void setAccountHolder (String AccountHolder)
+ {
+   this.AccountHolder = AccountHolder;
+ }
+  //sets Account Type
+  public void setAccountType (String AccountType)
+  {
+    this.AccountType = AccountType;
+  }
+  
+  public double setAccBal (String accBal1)
+  {
+    this.accBal = Float.parseFloat(accBal1);  //set balance field
+    accBal = accBal;
+    return accBal;
+  }
+  
+  //set opening balance
+  public double setAccountBalance (String accBal1)
+  {
+    this.accBal = Float.parseFloat(accBal1);
+    accBal = accBal;
+    return accBal;
+  }
+  
+public double setInputDep (String amt)
+{
+  this.accDep = Float.parseFloat(amt);
+  accBal += accDep;
+  return accBal;
+}
+  
+public double setInputWith (String amt)
+{
+  this.accWith = Float.parseFloat(amt);
+  accBal -= accWith;
+  return accBal;
+}
+  
+  
+  
+ /// The mutators below here are not used for the Account Information 
+ //public void setRoomNumber (String roomNumber)
+// {
+//    this.roomNumber= roomNumber;
+    //buildingNumber = roomNumber.substring(0,2) + "00";
+// }
+// public void setSectionID (String sectionID)
+// {
+//    this.sectionID= sectionID;
+//    AccountCount++;
+// } 
+//  public void setName (String name)
+// {
+//    this.classname= name;
+// } 
+// public void setInstructor (String Instructor)
+// {
+//    this.Instructor= Instructor;
+// }
+ ///**************************End of Mutators that are not used
+  //set Input field
+  public double setInput (String accBal1)
+  {
+    this.accInput = Float.parseFloat(accBal1);
+    accInput = accInput;
+    return accInput;
+  }
+  
+  //********************************End Mutator Methods
+  
+  //************** Accessor Methods
+  public double getInputBoxDep()
+  {
+    this.accDep = Float.parseFloat(accBal1);
+    accBal += accDep;
+    return accBal;
+  }
+  
+  public double getInputBoxWith()
+  {
+    this.accInput = Float.parseFloat(accBal1);
+    accBal -= accInput;
+    return accBal;
+  }
+  
+  public String getAccountNumber()
+  {
+    return AccountNumber;
+  }
+  
+  public String getAccountType()
+  {
+    return AccountType;
+  }
+  
+  //get account Holder name
+  public String getAccountHolder()
+  {
+    return AccountHolder;
+  }
+  public String getName ()
+  {
+    return AccountHolder; // THis does same thing as one right above
+  }
+  
+  public double getAccBal()
+  {
+    
+   double accBal = Double.parseDouble(accBal1);  // parses the string value from tf entry
+   accBal = accBal ;     // calculates withdraw
+   return accBal;                         // returns the account balance
+  }
+    
+//    this.accBal = Float.parseFloat(accBal1);
+//    return accBal;
+//  }
+  
+  
+  
+    
+  
+  ////////////////////////////////////////
+ public void writeRecord()
+  {
+     try
+     {
+      conn2 = DriverManager.getConnection(DB_URL2,USER,PASS); //this is the new connection// insert data into the table
+      String sql = "INSERT INTO AccountDB " +
+        "(AccountType, AccountNumber, AccountBalance, AccountHolder, InputAmt, ClassDate ) " +
+        "VALUES (?, ?, ?, ?, ?, ?)"; // set the sql string
+      // the ??? are place holders for the next part
+      PreparedStatement preparedStmt = conn2.prepareStatement(sql); // create the prepared statement
+ 
+      //the following lines load the ? fields for inserting
+      preparedStmt.setString (1, AccountType);
+      preparedStmt.setString (2, AccountNumber);
+      preparedStmt.setDouble (3, AccountBalance);
+      preparedStmt.setString (4, AccountHolder);
+      preparedStmt.setDouble (5, InputAmt);
+      preparedStmt.setString (6, "Tuesdays 7:00 p.m.");
+      preparedStmt.execute(); //insert the record
+     }
+   catch (Exception e)
+   {
+     System.out.println(e);
+   }
+  }
+   public void updateRecord()
+  {
+     try
+     {
+      conn2 = DriverManager.getConnection(DB_URL2,USER,PASS); //this is the new connection// insert data into the table
+      String sql = "update Account " +
+        "set AccountNumber = ?, AccountBalance = ?, AccountHolder = ?, InputAmt = ? where AccountType = ?";
+      // the ??? are place holders for the next part
+      PreparedStatement preparedStmt = conn2.prepareStatement(sql); // create the prepared statement
+ 
+      //the following lines load the ? fields for inserting
+      preparedStmt.setString (1, AccountNumber);
+      preparedStmt.setDouble (2, AccountBalance);
+      preparedStmt.setString (3, AccountHolder);
+      preparedStmt.setDouble (4, InputAmt);
+      preparedStmt.setString (5, AccountType);
+      preparedStmt.execute(); //insert the record
+     }
+   catch (Exception e)
+   {
+     System.out.println(e);
+   }
+  }
+    
+  //delete
+  public void deleteRecord(String id)
+  {
+     try
+     {
+      conn2 = DriverManager.getConnection(DB_URL2,USER,PASS); //this is the new connection// insert data into the table
+      String sql = "delete from Account where AccountType ?";
+      // the ??? are place holders for the next part
+      PreparedStatement preparedStmt = conn2.prepareStatement(sql); // create the prepared statement
+ 
+      //the following lines load the ? fields for inserting
+      preparedStmt.setString (1, id);
+      preparedStmt.executeUpdate(); //insert the record
+     }
+   catch (Exception e)
+   {
+     System.out.println(e);
+   }
+  }
+ ///////////////////////////////////////// 
+  
+ //******************* Accessor Methods *************** 
+// public String getRoomNumber()
+// {
+//    return roomNumber;
+// }
+
+//  public String getName()
+// {
+//    return classname;
+// } 
+// public String getInstructor()
+// {
+//    return Instructor;
+// }  
+// public String getSectionID()
+// {
+//    return sectionID;
+// }
+// public String getBuildingNumber()
+// {
+//    return buildingNumber;
+// }
+// static public int getAccountCount() 
+// {
+//    return AccountCount;
+// }
+ public void readRecord(String id)
+ {
+   System.out.println(id); 
+    try
+    {
+   	  conn2 = DriverManager.getConnection(DB_URL2,USER,PASS); //this is the new connection// insert data into the table
+
+      String sql = "select * from Account where AccountType = ?";
+      
+
+      // using a second PreparedStatement, because the first one was opened for insert
+      PreparedStatement preparedStmt2 = conn2.prepareStatement(sql); //this one is opened for select
+
+      preparedStmt2.setString (1, id); // pass the entered account number to
+      	  AccountType = id;
+      //  sectionID = id;
+      // to the prepared statement
+      ResultSet rs = preparedStmt2.executeQuery(); // execute the select
+      while (rs.next()) //loop through the results. 
+      {
+       AccountHolder = rs.getString("AccountHolder");
+       AccountNumber = rs.getString("AccountNumber");
+       AccountBalance = rs.getDouble("AccountBalance");
+       InputAmt = rs.getDouble("InputAmt");
+       classDate = rs.getString("ClassDate");
+        
+//       classname = rs.getString("AccountHolder");
+//       roomNumber = rs.getString("AccountNumber");
+//       buildingNumber = rs.getDouble("AccountBalance");
+//       Instructor = rs.getDouble("InputAmt");
+//       classDate = rs.getString("ClassDate");
+      }
+   }
+   catch (Exception e)
+   {
+     System.out.println(e);
+   }
+    
+
+ }
+}
