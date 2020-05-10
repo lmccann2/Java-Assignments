@@ -1,0 +1,808 @@
+//*******************************************************************
+// java 10.0.2
+// Levi McCann
+// Assignment 8 Bank_ATM_W_SQL
+// 05/05/20
+//  This program is simple Bank Account Program that uses SQL to
+//  build database, and get information about Bank Account.
+//  Makes Deposit, Withdraw, and List Account
+//  Info. Uses MariaDb, and Xampp--> Apache
+//  -->MySQL (MyPHPAdmin) to build Db. This is Assignment 8 
+//  final Java Assignment in CIS62 Java Programming, Shasta
+//  College Spring 2020 semester.  Program works correctly  -->
+//*******************************************************************
+
+import java.lang.Math; // headers MUST be above the first class
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.sql.*;
+
+
+public class Mccann_ATM_SQL extends JFrame 
+{
+  
+ static Account account1 = new Account();
+ //static Course course2 = new Course();
+ //static Course course3 = new Course();
+ //static Course course4 = new Course();
+ //static int numOfCourses = 0;
+  
+  //Define Panels
+  static  JPanel menuScreen = new JPanel();
+  static  JPanel addScreen = new JPanel();
+  static  JPanel listScreen = new JPanel();
+  static  JPanel updateScreen = new JPanel();
+  static  JPanel deleteScreen = new JPanel();    // THis is now the withdraw scree
+   
+  static  JPanel headerPanel = new JPanel();
+  static  JPanel buttonPanel = new JPanel();
+  static  JPanel centerPanel = new JPanel();
+  
+  static  JPanel u_headerPanel = new JPanel();
+  static  JPanel u_buttonPanel = new JPanel();
+  static  JPanel u_centerPanel = new JPanel();
+  
+  //withdraw panels
+  static  JPanel w_headerPanel = new JPanel();
+  static  JPanel w_buttonPanel = new JPanel();
+  static  JPanel w_centerPanel = new JPanel();
+  
+  //define labels   
+  static  JLabel pageHeaderLbl = new JLabel("     Account Info:     ");
+  static  JLabel classNameLbl = new JLabel("Account Name and Type:", JLabel.RIGHT);
+  static  JLabel accNumLbl = new JLabel("Number:", JLabel.RIGHT);
+  static  JLabel accBalLbl = new JLabel("Balance:", JLabel.RIGHT);
+  static  JLabel inputLbl = new JLabel("Input:", JLabel.RIGHT);
+  static  JLabel blankLbl1 = new JLabel("");
+  static  JLabel blankLbl2 = new JLabel("");
+  static  JLabel blankLbl3 = new JLabel("");
+  
+  static  JLabel u_pageHeaderLbl = new JLabel("     Account Info:     ");
+  static  JLabel u_classNameLbl = new JLabel("Name and Type:", JLabel.RIGHT);
+  static  JLabel u_accNumLbl = new JLabel("Number:", JLabel.RIGHT);
+  static  JLabel u_accBalLbl = new JLabel("Balance:", JLabel.RIGHT);
+  static  JLabel u_inputLbl = new JLabel("Input:", JLabel.RIGHT);
+  static  JLabel u_blankLbl1 = new JLabel("");
+  static  JLabel u_blankLbl2 = new JLabel("");
+  static  JLabel u_blankLbl3 = new JLabel("");  
+  
+  // for withdrawal screen
+  static  JLabel w_pageHeaderLbl = new JLabel("     Account Info:     ");
+  static  JLabel w_classNameLbl = new JLabel("Name and Type:", JLabel.RIGHT);
+  static  JLabel w_accNumLbl = new JLabel("Number:", JLabel.RIGHT);
+  static  JLabel w_accBalLbl = new JLabel("Balance:", JLabel.RIGHT);
+  static  JLabel w_inputLbl = new JLabel("Input:", JLabel.RIGHT);
+  static  JLabel w_blankLbl1 = new JLabel("");
+  static  JLabel w_blankLbl2 = new JLabel("");
+  static  JLabel w_blankLbl3 = new JLabel(""); 
+  
+  
+  //define new textFields
+  static  JTextField tf_className = new JTextField(10);           // changed from className
+  static  JTextField tf_classAccType = new JTextField(10);
+  static  JTextField tf_classAccNumber = new JTextField(10);
+  static  JTextField tf_classAccBal = new JTextField(10);
+  static  JTextField tf_classInput = new JTextField(10);
+  
+  //define textfields
+  //static  JTextField tf_className = new JTextField(10);
+  //static  JTextField tf_classSection = new JTextField(10);
+  //static  JTextField tf_classLocation = new JTextField(10);
+  //static  JTextField tf_classTime = new JTextField(10);
+  //static  JTextField tf_classInstructor = new JTextField(10);
+  
+  /// Create new Update TextFields
+  
+  static  JTextField u_tf_className = new JTextField(10);
+  static  JTextField u_tf_classAccType = new JTextField(10);
+  static  JTextField u_tf_classAccNumber = new JTextField(10);
+  static  JTextField u_tf_classAccBal = new JTextField(10);
+  static  JTextField u_tf_classInput = new JTextField(10);  
+  
+  //create new tf for withdraw (Delete) screen
+  static  JTextField w_tf_className = new JTextField(10);
+  static  JTextField w_tf_classAccType = new JTextField(10);
+  static  JTextField w_tf_classAccNumber = new JTextField(10);
+  static  JTextField w_tf_classAccBal = new JTextField(10);
+  static  JTextField w_tf_classInput = new JTextField(10);  
+  
+  //static  JTextField u_tf_className = new JTextField(10);
+  //static  JTextField u_tf_classSection = new JTextField(10);
+  //static  JTextField u_tf_classLocation = new JTextField(10);
+  //static  JTextField u_tf_classTime = new JTextField(10);
+  //static  JTextField u_tf_classInstructor = new JTextField(10);  
+  
+     //define buttons
+  //add screen buttons
+  static  JButton addSubmitBtn = new JButton("Submit");
+  static  JButton addClearBtn = new JButton("Clear");
+  static  JButton addBackBtn = new JButton("Back");
+
+  //add screen buttons
+  static  JButton u_SubmitBtn = new JButton("Submit");
+  static  JButton u_ClearBtn = new JButton("Clear");
+  static  JButton u_BackBtn = new JButton("Back");
+  
+  //Withdraw screen buttons
+  static  JButton w_SubmitBtn = new JButton("Submit");
+  static  JButton w_ClearBtn = new JButton("Clear");
+  static  JButton w_BackBtn = new JButton("Back");
+  
+  //menu screen buttons
+  static  JButton addBtn = new JButton("Add Data");
+  static  JButton listBtn = new JButton("List");
+  static  JButton updateBtn = new JButton("Update (deposit)");
+  static  JButton deleteBtn = new JButton("Withdraw");
+  /////////////////////////////////////////////////////////
+  static  JButton buildBtn = new JButton("Build Database");
+  /////////////////////////////////////////////////////////
+  
+ public Mccann_ATM_SQL()
+ {
+   
+ }
+  
+ public static void main (String []args)
+ {
+	   
+    //set panel layouts   
+   ///////////////////////////////////////////////
+    menuScreen.setLayout(new GridLayout(3,2,25,25));
+   ///////////////////////////////////////////////
+    addScreen.setLayout(new BorderLayout());
+    headerPanel.setLayout(new FlowLayout());
+    buttonPanel.setLayout(new FlowLayout());
+    centerPanel.setLayout(new GridLayout(4,3,10,5));
+   
+    updateScreen.setLayout(new BorderLayout());
+    u_headerPanel.setLayout(new FlowLayout());
+    u_buttonPanel.setLayout(new FlowLayout());
+    u_centerPanel.setLayout(new GridLayout(4,3,10,5));
+   
+    deleteScreen.setLayout(new BorderLayout());
+    w_headerPanel.setLayout(new FlowLayout());
+    w_buttonPanel.setLayout(new FlowLayout());
+    w_centerPanel.setLayout(new GridLayout(4,3,10,5));
+ 
+    turnOnActionListeners();
+ 
+    addObjectsToAddScreen();
+ 
+   
+    menuScreen.add(addBtn);
+    menuScreen.add(updateBtn);
+    menuScreen.add(deleteBtn);
+    menuScreen.add(listBtn);
+    ///////////////////////////////////////////
+    menuScreen.add(buildBtn);
+    ///////////////////////////////////////////
+   
+    //define window frame and display
+    JFrame window = new JFrame("Account Information:");
+   
+    window.setLayout(new FlowLayout());
+    window.add(menuScreen);
+    window.add(addScreen);
+    window.add(updateScreen);       // deposit screen
+    window.add(deleteScreen);       // withdraw screen
+   
+    menuScreen.setVisible(true);
+    addScreen.setVisible(false);
+    updateScreen.setVisible(false);   // deposit screen
+    deleteScreen.setVisible(false);   // withdraw screen
+   
+    window.setSize(550,250);
+    window.setLocation(400,400);
+    window.setResizable(false);
+    window.setVisible(true);
+ }
+  
+  
+//  tf
+  
+  
+  
+  
+ static public void addRecord()
+ {
+    //numOfCourses++;
+    //if (numOfCourses == 1)
+    //{
+      account1.setAccountHolder(tf_className.getText());
+      account1.setAccountType(tf_classAccType.getText());  //Set AccountType
+//      account1.setAccBal(tf_classAccBal.getText());
+      account1.setAccountNumber(tf_classAccNumber.getText());   //Set Account Number
+      /// make String and parseDouble to put tf_classAccBal into double
+       String accBal1 = "";
+     // double bal = Double.parseDouble(account01.getAccBal(tf_accBal.getText()));
+      double InputAmt = Double.parseDouble(tf_classInput.getText());
+        //Double.parseDouble(userAmt);
+      double Tf_input = Double.parseDouble(tf_classInput.getText());;
+      
+      double bal = Double.parseDouble(tf_classAccBal.getText());
+//      double DepBal =   bal + InputAmt ;   // this is set for withdraw, but change to + for Deposit
+      //  get the tf_classAccBal
+      account1.setAccBal(tf_classAccBal.getText());
+      bal = account1.setAccBal(tf_classAccBal.getText());
+    //  DepBal = bal + InputAmt ;  // sets amount for input field and AccountBalance
+      InputAmt = account1.setInputAmt(tf_classInput.getText());
+        //account1.setInput(tf_classInput.getText());      //Input Field
+      /////////////////////////////////////////////////////
+      account1.writeRecord();
+      ////////////////////////////////////////////////////
+      
+      // make sure accBal is converted to double
+      
+      
+      clearAddScreen(); //when adding a record call the clear method
+
+      JOptionPane.showMessageDialog(null, "Account:  and Type: " + account1.getAccountHolder() + "\n" +
+                                    account1.getAccountType()     + "\n" + 
+                                    " $ " + bal);
+    //}
+ }
+  
+  //********************************** Deposit *****************************************************************
+   static public void depRecord()
+ {
+    //numOfCourses++;
+    //if (numOfCourses == 1)
+    //{
+      account1.setAccountHolder(u_tf_className.getText());
+      account1.setAccountType(u_tf_classAccType.getText());  //Set AccountType
+//      account1.setAccBal(u_tf_classAccBal.getText());
+      account1.setAccountNumber(u_tf_classAccNumber.getText());   //Set Account Number
+      /// make String and parseDouble to put tf_classAccBal into double
+      String accBal1 = "";
+     // double bal = Double.parseDouble(account01.getAccBal(tf_accBal.getText()));
+      double InputAmt = Double.parseDouble(u_tf_classInput.getText());
+        //Double.parseDouble(userAmt);
+      //double Tf_input = Double.parseDouble(u_tf_classInput.getText());
+      
+      double bal = Double.parseDouble(u_tf_classAccBal.getText());
+      double DepBal =   bal + InputAmt ;
+      //  get the u_tf_classAccBal
+      account1.setAccBal(u_tf_classAccBal.getText());
+      bal = account1.setAccBal(u_tf_classAccBal.getText());
+      
+      account1.setInput(u_tf_classInput.getText());      //Input Field
+//      DepBal = account1.setAccBal(u_tf_classAccBal.getText());   // AccountBalance
+      
+       //DepBal = bal + InputAmt;   // Gets deposit and calculates AccountBalance
+     // InputAmt = account1.setInput(u_tf_classInput.getText());
+      //DepBal = InputAmt;  // gets and calcs AccountBalance with deposit
+      //InputAmt = DepBal ;       // puts DepBal into InputAmt
+      //DepBal = bal + input;                             // takes the AccountBalance subtacts inputAmt
+      /////////////////////////////////////////////////////
+       InputAmt = bal + InputAmt;  // calc for deposit
+   
+     account1.depositRecord();
+//     account1.updateRecord();
+      // account1.writeRecord();
+      ////////////////////////////////////////////////////
+      
+      // make sure accBal is converted to double
+      
+      
+      clearAddScreen(); //when adding a record call the clear method
+
+      JOptionPane.showMessageDialog(null, "Account: " + account1.getAccountHolder() + "\n" +
+                                    "Type: " + account1.getAccountType()     + "\n" + 
+                                    "Balance: $" + bal + "\n" +
+                                    "New Bal: $" + InputAmt);
+    //}
+ }
+//*************************************Withdraw Record() ************************************************************************8  
+  
+   static public void withdrawRecord()
+ {
+    //numOfCourses++;
+    //if (numOfCourses == 1)
+    //{
+      account1.setAccountHolder(w_tf_className.getText());
+      account1.setAccountType(w_tf_classAccType.getText());  //Set AccountType
+//      account1.setAccBal(w_tf_classAccBal.getText());
+      account1.setAccountNumber(w_tf_classAccNumber.getText());   //Set Account Number
+      /// make String and parseDouble to put tf_classAccBal into double
+      String accBal1 = "";
+     // double bal = Double.parseDouble(account01.getAccBal(tf_accBal.getText()));
+      double InputAmt = Double.parseDouble(w_tf_classInput.getText());
+        //Double.parseDouble(userAmt);
+      //double Tf_input = Double.parseDouble(w_tf_classInput.getText());
+      
+      double bal = Double.parseDouble(w_tf_classAccBal.getText());
+      double DepBal =   bal - InputAmt ;         //  calculates the Withdrawal
+      //  get the u_tf_classAccBal
+      account1.setAccBal(w_tf_classAccBal.getText());
+      bal = account1.setAccBal(w_tf_classAccBal.getText());
+      
+      account1.setInput(w_tf_classInput.getText());      //Input Field
+      InputAmt = bal - InputAmt;    // calc withdraw
+//      DepBal = account1.setAccBal(u_tf_classAccBal.getText());   // AccountBalance
+      
+       //DepBal = bal + InputAmt;   // Gets deposit and calculates AccountBalance
+     // InputAmt = account1.setInput(w_tf_classInput.getText());
+      //DepBal = InputAmt;  // gets and calcs AccountBalance with deposit
+      //InputAmt = DepBal ;       // puts DepBal into InputAmt
+      //DepBal = bal + input;                             // takes the AccountBalance subtacts inputAmt
+      /////////////////////////////////////////////////////
+       //InputAmt = bal - InputAmt;  // calc for Withdrawal
+       double AccountBalance = bal;
+      account1.withdrawalRecord();
+//     account1.depositRecord();
+//     account1.updateRecord();
+      // account1.writeRecord();
+      ////////////////////////////////////////////////////
+      
+      // make sure accBal is converted to double
+      
+      
+      clearAddScreen(); //when adding a record call the clear method
+
+      JOptionPane.showMessageDialog(null, "Account: " + account1.getAccountHolder() + "\n" +
+                                    "Type: " + account1.getAccountType()     + "\n" + 
+                                    "Balance: $" + bal + "\n" +
+                                    "New Bal: $" + InputAmt);
+    //}
+ }
+  
+  
+  
+  
+//  static public void updateRecord()
+// {
+//    	    
+//      account1.setAccountHolder(u_tf_className.getText());
+//      account1.setAccountType(u_tf_classAccType.getText());
+//      account1.setAccountNumber(u_tf_classAccNumber.getText());
+//      account1.setAccountBalance(u_tf_classAccBal.getText());
+//      account1.setInput(u_tf_classInput.getText());
+    
+     // Sets the tfs to doubles
+//      double input = Double.parseDouble(tf_classInput.getText());
+        //Double.parseDouble(userAmt);
+//      double Tf_input = Double.parseDouble(tf_classInput.getText());;
+      
+//      double bal = Double.parseDouble(tf_classAccBal.getText());
+//      double DepBal =   bal + input ;
+//    account1.setSectionID(u__classSection.getText());
+//      account1.setRoomNumber(u_tf_classLocation.getText());
+//      account1.setInstructor(u_tf_classInstructor.getText());
+//      account1.updateRecord();
+
+//      JOptionPane.showMessageDialog(null, "Account 1:  Section " + account1.getAccountType() + "\n" +
+//                                    account1.getAccountHolder() + "\n" + 
+//                                    DepBal);
+// }
+  
+  
+  
+  
+  
+  
+ static public void clearAddScreen()
+ {
+   tf_className.setText("");
+   tf_classAccType.setText("");
+   tf_classAccNumber.setText("");
+   tf_classAccBal.setText("");
+   tf_classInput.setText("");
+   
+   
+//   tf_classSection.setText("");
+//   tf_classLocation.setText("");
+//   tf_classTime.setText("");
+//   tf_classInstructor.setText("");
+ }
+  
+  
+  
+  
+  
+  
+  
+  
+ static public void addObjectsToAddScreen() //adding objects to add screen panel
+ {
+       //add objects to panels   
+    headerPanel.add(pageHeaderLbl);
+   
+    centerPanel.add(classNameLbl);     //row 1
+    centerPanel.add(tf_className);
+    centerPanel.add(tf_classAccType); 
+//    centerPanel.add(tf_classSection);  // changed to tf_classAccType
+    
+    centerPanel.add(accNumLbl);      //row 2
+    centerPanel.add(tf_classAccNumber);
+
+   
+   //centerPanel.add(locationLbl);      //row 2
+   // centerPanel.add(tf_classLocation);
+    centerPanel.add(blankLbl1);
+    
+//  Added for Account Balance labels and TextFields
+    centerPanel.add(accBalLbl);          //row 3
+    centerPanel.add(tf_classAccBal);
+    centerPanel.add(blankLbl2);
+   
+   
+   
+ //   centerPanel.add(timeLbl);          //row 3
+ //   centerPanel.add(tf_classTime);
+ //   centerPanel.add(blankLbl2);
+    
+      centerPanel.add(inputLbl);    //row 4
+      centerPanel.add(tf_classInput);
+      centerPanel.add(blankLbl3);
+   
+  // Took out used labels and textField above 
+//    centerPanel.add(instructorLbl);    //row 4
+//    centerPanel.add(tf_classInstructor);
+//    centerPanel.add(blankLbl3);
+    
+    buttonPanel.add(addBackBtn);
+    buttonPanel.add(addSubmitBtn);
+    buttonPanel.add(addClearBtn);
+   
+   
+    //add sub panels to main panel.
+    addScreen.add(headerPanel, BorderLayout.NORTH);
+    addScreen.add(centerPanel, BorderLayout.CENTER);
+    addScreen.add(buttonPanel, BorderLayout.SOUTH);
+   
+          //add objects to update panels   
+    u_headerPanel.add(u_pageHeaderLbl);
+   
+    u_centerPanel.add(u_classNameLbl);     //row 1
+    u_centerPanel.add(u_tf_className);     // Account Holders name
+	u_centerPanel.add(u_tf_classAccType);   // added for account Type
+   
+//   u_centerPanel.add(u_tf_classSection);
+ 
+    u_centerPanel.add(u_accNumLbl);      //row 2  Account Number row starts
+//    u_centerPanel.add(u_locationLbl);      //row 2
+//    u_centerPanel.add(u_tf_classLocation);
+    u_centerPanel.add(u_tf_classAccNumber);
+    u_centerPanel.add(u_blankLbl1);
+    
+    u_centerPanel.add(u_accBalLbl);          //row 3
+    u_centerPanel.add(u_tf_classAccBal);
+    u_centerPanel.add(u_blankLbl2);
+   
+   
+//    u_centerPanel.add(u_timeLbl);          //row 3
+//    u_centerPanel.add(u_tf_classTime);
+//    u_centerPanel.add(u_blankLbl2);
+ 
+  
+    u_centerPanel.add(u_inputLbl);    //row 4
+    u_centerPanel.add(u_tf_classInput);
+    u_centerPanel.add(u_blankLbl3);
+   
+   // use above labels and textFields
+//    u_centerPanel.add(u_instructorLbl);    //row 4
+//    u_centerPanel.add(u_tf_classInstructor);
+//    u_centerPanel.add(u_blankLbl3);
+    
+    u_buttonPanel.add(u_BackBtn);
+    u_buttonPanel.add(u_SubmitBtn);
+    u_buttonPanel.add(u_ClearBtn);
+   
+   
+    //add sub panels to main panel.
+    updateScreen.add(u_headerPanel, BorderLayout.NORTH);
+    updateScreen.add(u_centerPanel, BorderLayout.CENTER);
+    updateScreen.add(u_buttonPanel, BorderLayout.SOUTH);
+   
+   //add to withdraw screen
+             //add objects to update panels   
+    w_headerPanel.add(w_pageHeaderLbl);
+   
+    w_centerPanel.add(w_classNameLbl);     //row 1
+    w_centerPanel.add(w_tf_className);     // Account Holders name
+	w_centerPanel.add(w_tf_classAccType);   // added for account Type
+   
+//   u_centerPanel.add(u_tf_classSection);
+ 
+    w_centerPanel.add(w_accNumLbl);      //row 2  Account Number row starts
+//    u_centerPanel.add(u_locationLbl);      //row 2
+//    u_centerPanel.add(u_tf_classLocation);
+    w_centerPanel.add(w_tf_classAccNumber);
+    w_centerPanel.add(w_blankLbl1);
+    
+    w_centerPanel.add(w_accBalLbl);          //row 3
+    w_centerPanel.add(w_tf_classAccBal);
+    w_centerPanel.add(w_blankLbl2);
+   
+   
+//    u_centerPanel.add(w_timeLbl);          //row 3
+//    u_centerPanel.add(w_tf_classTime);
+//    u_centerPanel.add(w_blankLbl2);
+ 
+  
+    w_centerPanel.add(w_inputLbl);    //row 4
+    w_centerPanel.add(w_tf_classInput);
+    w_centerPanel.add(w_blankLbl3);
+   
+   // use above labels and textFields
+//    u_centerPanel.add(u_instructorLbl);    //row 4
+//    u_centerPanel.add(u_tf_classInstructor);
+//    u_centerPanel.add(u_blankLbl3);
+    
+    w_buttonPanel.add(w_BackBtn);
+    w_buttonPanel.add(w_SubmitBtn);
+    w_buttonPanel.add(w_ClearBtn);
+   
+   
+    //add sub panels to main panel.
+    deleteScreen.add(w_headerPanel, BorderLayout.NORTH);
+    deleteScreen.add(w_centerPanel, BorderLayout.CENTER);
+    deleteScreen.add(w_buttonPanel, BorderLayout.SOUTH);
+   
+ }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  ////all action listeners are done here
+ static public void turnOnActionListeners()
+ {
+      //turn on action listener for submit button
+	// Menu buttons
+   //////////////////////////////////////////////////////
+    buildBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           CreateDB newDB = new CreateDB();
+        }
+    });
+   /////////////////////////////////////////////////////
+    addBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           menuScreen.setVisible(false);
+    	   addScreen.setVisible(true);
+        }
+    });
+    updateBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           menuScreen.setVisible(false);
+           String id = JOptionPane.showInputDialog("Account Holder to update?");
+           System.out.println(id);   
+           account1.readRecord(id);
+          
+    	   updateScreen.setVisible(true);
+           //may want to ask for which Account to edit using JOptionPane.showInputDialog
+            
+        // This works the way it is supposed to work
+          
+                    
+           //String id = JOptionPane.showInputDialog("Account Holder to List");  
+           account1.readRecord(id);
+           JOptionPane.showMessageDialog(null, "Account 1 Name: " + account1.getAccountHolder() + "\n" +
+                                         "Type: " + account1.getAccountType() + "\n" +
+                                         
+//                                    account1.getAccountHolder() + "\n" + 
+                                    " $ " + account1.getAccBal());
+      		
+            
+          
+ 
+          
+              u_tf_className.setText(account1.getAccountHolder());                 //puts AccountHolder name in textField
+              u_tf_classAccType.setText(account1.getAccountType());       //puts AccountType in TextField
+      	      u_tf_classAccNumber.setText(account1.getAccountNumber());   //puts AccountNumber in Textfield
+              String accbal;
+           //   double AccountBalance = Double.parseDouble(u_tf_classAccBal.setText(account1.getAccBal()));
+              //double bal = Double.parseDouble(u_tf_classAccBal.getText());
+              //double AccountBalance = Double.parseDouble(u_tf_classAccBal.getText());  // gets Account Balance tf
+              //accbal = u_tf_classAccBal.setText(account1.setAccBal());
+             // AccBal = Double.parseDouble(u_tf_classAccBal.setText(account1.getAccBal()));
+           //     u_tf_classAccBal.setText(account1.getAccBal(Double.toString(AccountBalance)));            // puts AccountBalance in Tf
+            //  u_tf_classInput.setText(account1.getInputBoxDepStr());                            //puts InputAmt
+//            account1.setAccBal(u_tf_classAccBal.getText());
+
+ 
+            
+       
+ //           u_tf_classAccBal.setText(account1.getAccountBalance());   // Should return AccountBalance
+           //   u_tf_className.setEditable(false);  //field is output only
+        }
+    });
+   
+    //Add screen buttons
+    addSubmitBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           addRecord();
+        }
+    });
+    addClearBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           clearAddScreen(); //also call the clear method
+        }
+    });
+    addBackBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           menuScreen.setVisible(true);
+    	   addScreen.setVisible(false);
+        }
+    });
+   
+   
+    //update screen buttons
+    u_SubmitBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+          depRecord();
+         // updateRecord();
+        }
+    });
+    u_ClearBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           clearAddScreen(); //also call the clear method
+        }
+    });
+    u_BackBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           menuScreen.setVisible(true);
+    	   updateScreen.setVisible(false);
+        }
+    });
+   //*************For withdraw buttons
+       //update screen buttons
+    w_SubmitBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+          withdrawRecord();
+         // updateRecord();
+        }
+    });
+    w_ClearBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           clearAddScreen(); //also call the clear method
+        }
+    });
+    w_BackBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           menuScreen.setVisible(true);
+    	   deleteScreen.setVisible(false);
+        }
+    });
+   
+   
+   
+   //list button
+    listBtn.addActionListener(new ActionListener() 
+    {
+      
+
+        public void actionPerformed(ActionEvent e) 
+        {
+           
+        // This works the way it is supposed to work
+          
+                    
+           String id = JOptionPane.showInputDialog("Account Holder to List");  
+           account1.readRecord(id);
+           JOptionPane.showMessageDialog(null, "Account 1 Name: " + account1.getAccountHolder() + "\n" +
+                                         "Type: " + account1.getAccountType() + "\n" +
+                                         
+//                                    account1.getAccountHolder() + "\n" + 
+                                          " $ " + account1.getAccBal());
+        }
+    });
+   
+      
+   //delete button  now the Withdraw button
+    deleteBtn.addActionListener(new ActionListener() 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+           menuScreen.setVisible(false);
+           String id = JOptionPane.showInputDialog("Account Holder to update?");
+           System.out.println(id);   
+           account1.readRecord(id);
+          
+    	   deleteScreen.setVisible(true);
+           //may want to ask for which Account to edit using JOptionPane.showInputDialog
+            
+        // This works the way it is supposed to work
+          
+                    
+           //String id = JOptionPane.showInputDialog("Account Holder to List");  
+           account1.readRecord(id);
+           JOptionPane.showMessageDialog(null, "Account 1 Name: " + account1.getAccountHolder() + "\n" +
+                                         "Type: " + account1.getAccountType() + "\n" +
+                                         
+//                                    account1.getAccountHolder() + "\n" + 
+                                          " $ " + account1.getAccBal());
+      		
+            
+          
+ 
+          
+              w_tf_className.setText(account1.getAccountHolder());                 //puts AccountHolder name in textField
+              w_tf_classAccType.setText(account1.getAccountType());       //puts AccountType in TextField
+      	      w_tf_classAccNumber.setText(account1.getAccountNumber());   //puts AccountNumber in Textfield
+              String accbal;
+           //   double AccountBalance = Double.parseDouble(w_tf_classAccBal.setText(account1.getAccBal()));
+              //double bal = Double.parseDouble(w_tf_classAccBal.getText());
+              //double AccountBalance = Double.parseDouble(w_tf_classAccBal.getText());  // gets Account Balance tf
+              //accbal = w_tf_classAccBal.setText(account1.setAccBal());
+             // AccBal = Double.parseDouble(w_tf_classAccBal.setText(account1.getAccBal()));
+           //     w_tf_classAccBal.setText(account1.getAccBal(Double.toString(AccountBalance)));            // puts AccountBalance in Tf
+            //  w_tf_classInput.setText(account1.getInputBoxDepStr());                            //puts InputAmt
+//            account1.setAccBal(w_tf_classAccBal.getText());
+
+ 
+            
+       
+ //           w_tf_classAccBal.setText(account1.getAccountBalance());   // Should return AccountBalance
+           //   w_tf_className.setEditable(false);  //field is output only
+        }
+    });
+//{
+//        public void actionPerformed(ActionEvent e) 
+//        {
+//           String id = JOptionPane.showInputDialog("Account record to Delete");  
+//           account1.readRecord(id);
+//          
+//           double bal = Double.parseDouble(u_tf_classAccBal.getText());
+//           int result = JOptionPane.showConfirmDialog(null,"Account 1:   Type: " + account1.getAccountType() + "\n" +
+//                                    account1.getAccountHolder() + "\n" + 
+//                                    bal + "\n", "Confirm Delete",
+//               JOptionPane.YES_NO_OPTION,
+//               JOptionPane.QUESTION_MESSAGE);
+//            if(result == JOptionPane.YES_OPTION)
+//            {
+//                account1.deleteRecord(id); //perform the delete
+//             
+//                account1.setAccountHolder("");
+//     			account1.setAccountType("");
+//      			account1.setAccountNumber("");
+//may not need this line    //     account1.setAccBal("");
+//      			account1.setInput("");
+//            }else if (result == JOptionPane.NO_OPTION)
+//            {
+              // do nothing, answered no
+//            }else 
+//            {
+//              // do nothing, dialog closed
+//            }
+// 
+//        }
+//    });
+                                
+                                
+ }
+  
+}
+
+
+//CreateDB class
